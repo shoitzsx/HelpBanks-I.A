@@ -1,0 +1,574 @@
+/* FinanSmart IA - Tema Dark Purple Premium Unificado */
+
+:root {
+    --bg-deep: #0b0b14;         
+    --bg-surface: #161625;      
+    --purple-primary: #8a2be2;  
+    --purple-neon: #a855f7;     
+    --text-primary: #e2e2e2;    
+    --text-dim: #94a3b8;        
+    --success: #22c55e;         
+    --danger: #ff4d4d;          
+    --border: #2d2d44;          
+}
+
+/* --- Reset e Base --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    border: none; 
+    outline: none; 
+}
+
+body {
+    background-color: var(--bg-deep);
+    color: var(--text-primary);
+    display: flex;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* --- Layout Principal --- */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column; /* <-- ESSENCIAL: Empilha os blocos */
+    gap: 20px;
+    padding: 40px;
+    overflow-y: auto; /* Permite rolar a página para baixo */
+}
+
+/* Garante que as abas ocupem a largura toda */
+#aba-dashboard, #aba-comprovantes, #aba-ranking {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    width: 260px;
+    background-color: #11111d;
+    padding: 30px 20px;
+    border-right: 1px solid var(--border);
+    transition: width 0.4s ease;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar.fechada { 
+    width: 80px; 
+}
+
+.sidebar-header {
+    padding-bottom: 20px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.sidebar-header h2 span { color: var(--purple-neon); }
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar button {
+    width: 100%;
+    background: transparent;
+    color: var(--text-dim);
+    padding: 12px 15px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+.sidebar button:hover {
+    background: rgba(138, 43, 226, 0.1);
+    color: var(--purple-neon);
+}
+
+.btn-toggle {
+    background: linear-gradient(135deg, var(--purple-primary), var(--purple-neon)) !important;
+    color: white !important;
+    font-weight: bold;
+    justify-content: center;
+}
+
+.sidebar.fechada .txt-menu, 
+.sidebar.fechada .sidebar-header h2 {
+    display: none;
+}
+
+/* --- Dashboard e Seções --- */
+#aba-dashboard, #aba-comprovantes, #aba-ranking {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.header-saldo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.header-saldo strong {
+    color: var(--success);
+    text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+}
+
+/* --- Cards e Formulários --- */
+.card-ia, .formulario, .lista-coluna, .mentor-box {
+    background: var(--bg-surface);
+    padding: 25px;
+    border-radius: 20px; 
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.cards-listas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.cadastro-fixo {
+    display: flex;
+    gap: 15px;
+}
+
+.item-fixo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(168, 85, 247, 0.05);
+    padding: 15px;
+    border-radius: 20px; 
+    border-left: 4px solid var(--purple-neon);
+    margin-bottom: 10px;
+}
+
+/* --- Mentor IA e Ranking --- */
+.mentor-box {
+    border: 2px solid var(--purple-neon);
+    background: linear-gradient(145deg, var(--bg-surface), #1e1e30);
+}
+
+.chat-mentor {
+    display: flex;
+    gap: 10px;
+}
+
+.grid-ranking {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.banco-item {
+    background: var(--bg-deep);
+    padding: 15px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.badge-seguranca {
+    background: var(--success);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+/* --- Modal --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--bg-surface);
+    padding: 30px;
+    border-radius: 20px; 
+    border: 1px solid var(--purple-neon);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* --- AJUSTE ESPECÍFICO DO COFRE DE COMPROVANTES --- */
+
+#aba-comprovantes {
+    align-items: center; /* Centraliza o cofre na tela */
+    width: 100%;
+}
+
+.card-comprovantes {
+    width: 100%; /* Faz ocupar a largura do painel principal */
+    max-width: 900px;
+    background: var(--bg-surface);
+    padding: 30px;
+}
+
+
+.upload-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 20px 0;
+}
+
+.btn-upload-area {
+    width: 100%;
+    max-width: 500px; /* Deixa a área de clique em um tamanho confortável */
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    border: 2px dashed var(--purple-neon);
+    background: rgba(168, 85, 247, 0.05);
+    border-radius: 20px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.btn-upload-area span {
+    font-size: 1.1rem;
+    color: var(--purple-neon);
+}
+
+.btn-upload-area:hover {
+    background: rgba(168, 85, 247, 0.1);
+    border-color: var(--text-primary);
+}
+
+/* Ajuste das miniaturas das notas para não ficarem gigantes */
+.grid-comprovantes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.card-nota {
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    padding: 10px;
+    border-radius: 15px;
+    transition: 0.3s;
+}
+
+.card-nota:hover {
+    transform: translateY(-5px);
+    border-color: var(--purple-neon);
+}
+
+/* --- Inputs e Botões Gerais --- */
+input, select {
+    background: var(--bg-deep) !important;
+    border: 1px solid var(--border) !important;
+    color: white !important;
+    padding: 12px;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.btn-add, .btn-salvar, .btn-relatorio {
+    background: linear-gradient(135deg, var(--purple-primary), var(--purple-neon));
+    color: white;
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* Responsividade Mobile */
+@media (max-width: 768px) {
+    body { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+    main { padding: 20px; }
+    .cards-listas { grid-template-columns: 1fr; }
+}
+#lista-comprovantes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.card-nota {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.card-nota:hover {
+    transform: translateY(-5px);
+    border-color: var(--purple-neon);
+}
+@keyframes surgir {
+    from { transform: translateX(100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 5px rgba(138, 43, 226, 0.2); }
+    to { box-shadow: 0 0 15px rgba(138, 43, 226, 0.5); }
+}
+
+/* Estilo para o toast de sucesso */
+.toast-sucesso {
+    transition: opacity 0.5s ease;
+}
+/* --- ADICIONADO: Estilo para a Notificação (Toast) --- */
+.toast-sucesso {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--success);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 12px;
+    z-index: 10000;
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+    animation: surgir 0.5s ease-out;
+    transition: opacity 0.5s ease;
+}
+
+/* --- MELHORIA: Scrollbar Personalizada (Para combinar com o Roxo) --- */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-deep);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--purple-primary);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--purple-neon);
+}
+
+/* --- MELHORIA: Botões com Efeito de Clique --- */
+.btn-add, .btn-salvar, .btn-relatorio, .sidebar button {
+    transition: transform 0.2s active, background 0.3s;
+}
+
+.btn-add:active, .btn-salvar:active {
+    transform: scale(0.95);
+}
+
+/* --- AJUSTE: Grid de Bancos (Garante que os 15 bancos fiquem organizados) --- */
+#lista-ranking-bancos {
+    display: grid;
+    grid-template-columns: 1fr; /* Lista vertical para bancos */
+    gap: 12px;
+    width: 100%;
+}
+
+/* --- ANIMAÇÃO DE GLOW (CORREÇÃO) --- */
+@keyframes glow {
+    from { box-shadow: 0 0 5px rgba(168, 85, 247, 0.2); }
+    to { box-shadow: 0 0 20px rgba(168, 85, 247, 0.6); }
+}
+
+/* --- ESTILO PARA O SIMULADOR (CHAT) --- */
+#chat-simulador, #chat-simulacao {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 15px;
+    border-left: 3px solid var(--purple-neon);
+    margin-bottom: 15px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+/* --- Estilo das Mensagens de Alerta (Login/Cadastro) --- */
+.flash-message {
+    background: rgba(138, 43, 226, 0.1);
+    border: 1px solid var(--purple-neon);
+    color: var(--text-primary);
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.4;
+    animation: glow 2s infinite alternate, surgir 0.5s ease;
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
+}
+
+/* Ajuste específico para os links dentro das mensagens */
+.flash-message a {
+    color: var(--purple-neon);
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* Centralização da tela de login/registro */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    background: radial-gradient(circle at center, #161625 0%, #0b0b14 100%);
+}
+
+/* Estilização extra para os inputs quando focados */
+input:focus {
+    border-color: var(--purple-neon) !important;
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
+    transition: 0.3s;
+}
+
+/* Estilo para o link de 'Criar conta' ou 'Voltar' */
+.auth-footer-link {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+
+.auth-footer-link a {
+    color: var(--purple-neon);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.auth-footer-link a:hover {
+    text-shadow: 0 0 5px var(--purple-neon);
+    color: white;
+}
+.btn-sair-topo {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 68, 68, 0.1);
+    color: #ff4444;
+    border: 1px solid #ff4444;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.8rem;
+    transition: 0.3s;
+    text-decoration: none;
+    z-index: 1000;
+}
+
+.btn-sair-topo:hover {
+    background: #ff4444;
+    color: white;
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.5);
+}
+/* --- ANIMAÇÕES PARA O SISTEMA DE IA --- */
+
+/* Efeito de surgimento suave dos resultados */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Efeito de pulsação para o banco vencedor */
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(34, 197, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+/* Efeito de rotação para o loader de foguete/carregamento */
+@keyframes spinIA {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+/* --- ESTILOS ADICIONAIS DE INTERAÇÃO --- */
+
+.loader-ia {
+    display: inline-block;
+    animation: spinIA 2s linear infinite;
+    filter: drop-shadow(0 0 8px var(--purple-neon));
+}
+
+/* Estado de botão "Comparar" selecionado */
+.btn-comparar-ativo {
+    background: var(--purple-neon) !important;
+    color: white !important;
+    box-shadow: 0 0 15px var(--purple-neon);
+}
+
+/* Área da "Aula" da IA */
+#aula-area {
+    animation: fadeIn 0.8s ease;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid var(--border);
+}
+
+/* Ajuste no card do Duelo para destacar o vencedor */
+.duelo-vencedor {
+    animation: pulse 2s infinite;
+    border: 2px solid var(--success) !important;
+}
+
+/* --- HISTÓRICO DE AULAS (Cofre) --- */
+#historico-lista {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+#historico-lista::-webkit-scrollbar {
+    width: 4px;
+}
+
+/* Detalhes da aula dentro do histórico */
+details summary {
+    padding: 10px;
+    background: rgba(168, 85, 247, 0.1);
+    border-radius: 10px;
+    margin-top: 5px;
+    transition: 0.3s;
+}
+
+details[open] summary {
+    background: var(--purple-primary);
+    color: white;
+}

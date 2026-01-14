@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelpBanks IA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <a href="/logout" class="btn-sair-topo">
+        <i class="fas fa-sign-out-alt"></i> SAIR
+    </a>
+
+    <div class="sidebar" id="sidebar">
+        <button class="btn-toggle" onclick="toggleMenu()">
+            <span>☰</span> <span class="txt-menu">Menu</span>
+        </button>
+
+        <div class="sidebar-header">
+            <h2>HelpBanks <span>IA</span></h2>
+        </div>
+        <nav class="sidebar-nav">
+            <button onclick="navegarPara('dashboard')"><span>📊</span> <span class="txt-menu">Dashboard</span></button>
+            <button onclick="navegarPara('comprovantes')"><span>🧾</span> <span
+                    class="txt-menu">Comprovantes</span></button>
+            <button onclick="navegarPara('ranking')"><span>🏆</span> <span class="txt-menu">Ranking
+                    Bancos</span></button>
+            <button onclick="navegarPara('aulas')"><span>👨‍🏫</span> <span class="txt-menu">Rever Aulas</span></button>
+        </nav>
+    </div>
+
+    <main>
+        <section id="aba-dashboard">
+            <header>
+                <div class="header-saldo">
+                    <h1>Olá, seu saldo é: <strong id="saldo-valor">R$ 0</strong></h1>
+                    <button class="btn-editar-saldo" onclick="abrirModalSaldo()">✏️</button>
+                </div>
+
+                <div id="modal-overlay" class="modal-overlay">
+                    <div id="painel-editar-saldo" class="modal-content">
+                        <h3>Definir Novo Saldo</h3>
+                        <input type="text" id="novo-valor-saldo" placeholder="Ex: 2.500,00">
+                        <div class="modal-actions">
+                            <button class="btn-add" onclick="confirmarNovoSaldo()">DEFINIR</button>
+                            <button class="btn-remover" onclick="fecharModalSaldo()">&times;</button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="formulario">
+                <h3><i class="fas fa-history"></i> Meu Histórico de Aulas</h3>
+                <div id="historico-lista" style="max-height: 250px; overflow-y: auto;">
+                    <p style="color: var(--text-dim); font-size: 0.8rem;">Suas simulações aparecerão aqui.</p>
+                </div>
+            </div>
+
+            <div class="card-ia">
+                <h3>💡 Dica da IA</h3>
+                <p id="ia-texto">Adicione um gasto ou suas contas fixas para a IA analisar!</p>
+            </div>
+
+            <section class="formulario">
+                <h3>Adicionar Gasto</h3>
+                <input type="text" id="desc-gasto" placeholder="Ex: Cinema">
+                <input type="number" id="valor-gasto" placeholder="R$ 0,00">
+                <select id="categoria-gasto" class="select-dark">
+                    <option value="Lazer">Lazer</option>
+                    <option value="Variaveis">Variáveis</option>
+                </select>
+                <button class="btn-salvar" onclick="adicionarGasto()">Salvar Gasto</button>
+            </section>
+
+            <section class="formulario card-emergencia">
+                <h3>🚨 Reserva de Emergência</h3>
+                <div class="cadastro-fixo">
+                    <input type="number" id="valor-emergencia" placeholder="Quanto guardou hoje?">
+                    <button class="btn-add" onclick="salvarEmergencia()">💾</button>
+                </div>
+                <p>Total Guardado: <strong id="total-emergencia">R$ 0,00</strong></p>
+            </section>
+
+            <div class="cards-listas">
+                <div class="lista-coluna">
+                    <h4>🎭 Lazer</h4>
+                    <ul id="lista-lazer"></ul>
+                </div>
+                <div class="lista-coluna">
+                    <h4>💸 Variáveis</h4>
+                    <ul id="lista-variaveis"></ul>
+                </div>
+            </div>
+
+            <section class="formulario card-fixas">
+                <h3>📌 Minhas Contas Fixas</h3>
+                <div class="cadastro-fixo">
+                    <input type="text" id="nova-conta-nome" placeholder="Nome (ex: Academia)">
+                    <button class="btn-add" onclick="criarNovaContaFixo()">+</button>
+                </div>
+                <hr style="border-top: 1px solid var(--border); margin: 10px 0;">
+                <div id="container-contas-fixas"></div>
+            </section>
+
+            <section class="relatorio-final">
+                <button class="btn-relatorio" onclick="gerarRelatorioMensal()">✨ Analisar tudo com IA e Gerar
+                    Relatório</button>
+                <div id="relatorio-detalhado" class="feedback-ia-completo" style="display: none; margin-top: 20px;">
+                    <h3>📊 Relatório Mensal HelpBanks</h3>
+                    <div id="texto-relatorio" style="margin-top: 15px;">Gerando seu relatório estratégico...</div>
+                </div>
+            </section>
+        </section>
+
+        <section id="aba-comprovantes" style="display: none;">
+            <div class="formulario card-comprovantes">
+                <h3>📂 Cofre de Notas e Comprovantes</h3>
+                <p style="color: var(--text-dim); font-size: 0.9rem;">Guarde fotos de notas fiscais e recibos
+                    importantes.</p>
+                    <div class="card-ia" style="border-top: 2px solid #a855f7;">
+                        <h3>📷 Escanear Nota Fiscal</h3>
+                        <input type="file" id="inputNota" accept="image/*" style="display: none;">
+                        <button onclick="document.getElementById('inputNota').click()" class="btn-roxo">
+                            Selecionar Foto
+                        </button>
+                        <div id="resultadoOcr" style="margin-top: 15px; color: #ccc;"></div>
+                    </div>
+                    <div class="card-ia" style="background: #1a1a2e; border: 1px solid #333; padding: 20px; border-radius: 15px; text-align: center;">
+                        <h3 style="color: #a855f7; margin-bottom: 15px;">📷 Leitor de Comprovantes</h3>
+                        <p style="font-size: 14px; color: #aaa; margin-bottom: 20px;">Sincronize seus gastos via foto com Groq Vision</p>
+                        
+                        <input type="file" id="inputNota" accept="image/*" style="display: none;">
+                        
+                        <button onclick="document.getElementById('inputNota').click()" 
+                                style="background: #a855f7; color: white; border: none; padding: 10px 25px; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                            Escolher Foto da Nota
+                        </button>
+                    
+                        <div id="resultadoOcr" style="margin-top: 20px;"></div>
+                    </div>
+                <div class="upload-container" style="margin-top: 20px;">
+                    <label for="foto-comprovante" class="btn-upload-area">
+                        <span>📸 Tirar Foto ou Subir Nota</span>
+                        <input type="file" id="foto-comprovante" accept="image/*" capture="environment" hidden>
+                    </label>
+                </div>
+                <div id="lista-comprovantes" class="grid-comprovantes"></div>
+            </div>
+        </section>
+
+        <section id="aba-ranking" style="display: none;">
+            <div class="formulario">
+                <h3>🏆 Mentor IA: Ranking e Simulador</h3>
+
+                <div class="search-box" style="margin: 15px 0;">
+                    <input type="text" id="input-busca" onkeyup="filtrarBancos()"
+                        placeholder="🔍 Pesquisar banco para comparar..."
+                        style="border: 1px solid var(--purple-neon) !important; padding: 12px; border-radius: 10px; width: 100%; background: rgba(0,0,0,0.2); color: white;">
+                </div>
+
+                <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 15px;">
+                    Selecione dois bancos clicando em <b>⚖️ Comparar</b> para iniciar um duelo de rendimentos.
+                </p>
+
+                <div id="lista-ranking-bancos" class="grid-ranking">
+                    <p style="text-align: center; color: var(--purple-neon); padding: 20px;">
+                        <i class="fas fa-spinner fa-spin"></i> Carregando inteligência de mercado...
+                    </p>
+                </div>
+            </div>
+
+            <div id="resultado-duelo-container" style="margin-top: 20px;"></div>
+        </section>
+    </main>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

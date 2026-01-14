@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - HelpBanks IA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-container"> 
+    <div class="formulario" style="width: 100%; max-width: 400px; border: 1px solid var(--purple-neon); background: rgba(20, 20, 35, 0.9); padding: 30px; border-radius: 20px;">
+        <h2 style="color: var(--purple-neon); text-align: center; margin-bottom: 5px;">Criar Conta</h2>
+        <p style="text-align: center; color: var(--text-dim); margin-bottom: 20px; font-size: 0.85rem;">
+            Faça parte da nossa história!
+        </p>
+        
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="flash-message" style="border: 1px solid var(--purple-neon); color: #fff; padding: 10px; border-radius: 10px; margin-bottom: 15px; text-align: center; font-size: 0.8rem; background: rgba(138, 43, 226, 0.1);">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="/register">
+            <input type="text" name="username" placeholder="Seu Nome de Usuário" required style="margin-bottom: 15px; width: 100%; padding: 12px; background: #0b0b14; border: 1px solid #333; color: white; border-radius: 8px;">
+            
+            <input type="text" name="cpf" id="cpf-input" placeholder="000.000.000-00" required style="margin-bottom: 15px; width: 100%; padding: 12px; background: #0b0b14; border: 1px solid #333; color: white; border-radius: 8px;">
+            
+            <input type="password" name="password" placeholder="Crie uma Senha" required style="margin-bottom: 20px; width: 100%; padding: 12px; background: #0b0b14; border: 1px solid #333; color: white; border-radius: 8px;">
+            
+            <button type="submit" class="btn-salvar" style="width: 100%; font-size: 1rem; padding: 12px; cursor: pointer; font-weight: bold;">
+                CRIAR CONTA AGORA
+            </button>
+        </form>
+        
+        <div class="auth-footer-link" style="text-align: center; margin-top: 20px; font-size: 0.85rem; color: #888;">
+            Já tem conta conosco? 
+            <br>
+            <a href="/login" style="color: var(--purple-neon); text-decoration: none; font-weight: bold;">Voltar ao Login</a>
+        </div>
+    </div>
+
+    <script>
+        // Máscara de CPF
+        document.getElementById('cpf-input').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            if (value.length > 9) value = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{2}).*/, '$1.$2.$3-$4');
+            else if (value.length > 6) value = value.replace(/^(\d{3})(\d{3})(\d{3}).*/, '$1.$2.$3');
+            else if (value.length > 3) value = value.replace(/^(\d{3})(\d{3}).*/, '$1.$2');
+            e.target.value = value;
+        });
+
+        // 🛡️ TRAVA DE SEGURANÇA: Se o usuário tentar atualizar ou sair da tela de cadastro sem terminar, 
+        // garantimos que qualquer sessão residual seja limpa.
+        window.addEventListener('beforeunload', function () {
+            navigator.sendBeacon('/logout');
+        });
+    </script>
+</body>
+</html>

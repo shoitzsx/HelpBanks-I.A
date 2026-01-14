@@ -1,0 +1,11 @@
+flask
+flask-sqlalchemy
+flask-login
+werkzeug
+groq
+easyocr
+opencv-python-headless
+torch
+torchvision
+
+py -m pip install requirements.txt
